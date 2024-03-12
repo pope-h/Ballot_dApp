@@ -6,6 +6,8 @@ import Proposal from "./component/Proposal";
 import DelegateVote from "./component/DelegateVote";
 import useProposals from "./hooks/useProposals";
 import useHandleVote from "./hooks/useHandleVote";
+import useNumberOfVoters from "./hooks/useNumberOfVoters";
+import useNumberOfDelegates from "./hooks/useNumberOfDelegates";
 
 configureWeb3Modal();
 
@@ -13,10 +15,26 @@ function App() {
   const { loading, data: proposals } = useProposals();
 
   const handleVote = useHandleVote();
+  const numberOfVoters = useNumberOfVoters();
+  const numberOfDelegates = useNumberOfDelegates();
 
   return (
     <Container>
       <Header />
+      <main className="lg:mt-16 mt-8 flex flex-wrap justify-start px-6 py-8 md:justify-end gap-4 items-center">
+        <button className="bg-sky-700 text-white text-sm py-3 px-6 rounded-md">
+          Eligible Number of Voters:
+          <span className="bg-sky-100 ml-2 rounded-lg text-sky-500 px-2 py-1 font-bold">
+            {numberOfVoters}
+          </span>
+        </button>
+        <button className="bg-sky-700 text-white text-sm py-3 px-6 rounded-md">
+          Number of Delegated Voters:
+          <span className="bg-sky-100 ml-2 rounded-lg text-sky-500 px-2 py-1 font-bold">
+            {numberOfDelegates}
+          </span>
+        </button>
+      </main>
       <main className="mt-6">
         <Box mb="4">
           <DelegateVote />

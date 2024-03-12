@@ -8,6 +8,10 @@ pragma solidity >=0.7.0 <0.9.0;
  */
 contract Ballot {
 
+    event GiveRightToVote(address indexed voter, uint256 timestamp);
+    event Delegate(address indexed owner, address indexed delegate, uint256 weight, uint256 timestamp);
+    event Vote(address indexed voter, uint256 indexed proposal, uint256 weight);
+
     struct Voter {
         uint weight; // weight is accumulated by delegation
         bool voted;  // if true, that person already voted
@@ -47,7 +51,9 @@ contract Ballot {
         }
     }
 
-    function getAllProposals() external view returns (Proposal[] memory) {
+    
+
+    function getAllProposals() external  view returns(Proposal[] memory) {
         return proposals;
     }
 
@@ -66,6 +72,8 @@ contract Ballot {
         );
         require(voters[voter].weight == 0);
         voters[voter].weight = 1;
+
+        emit GiveRightToVote(voter, block.timestamp);
     }
 
     /**
@@ -95,6 +103,8 @@ contract Ballot {
             // add to her weight.
             delegate_.weight += sender.weight;
         }
+
+        emit  Delegate(msg.sender, to, sender.weight, block.timestamp);
     }
 
     /**
@@ -112,6 +122,8 @@ contract Ballot {
         // this will throw automatically and revert all
         // changes.
         proposals[proposal].voteCount += sender.weight;
+
+        emit Vote(msg.sender, proposal, sender.weight);
     }
 
     /** 

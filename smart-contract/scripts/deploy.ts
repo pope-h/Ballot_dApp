@@ -6,7 +6,9 @@ async function main() {
   const Daniel = "0x44616e69656c0000000000000000000000000000000000000000000000000000";
   const Ajidoku = "0x416a69646f6b7500000000000000000000000000000000000000000000000000";
 
-  const ballot = await ethers.deployContract("Ballot", [Adekunle, Jeff, Daniel, Ajidoku]);
+  const proposals = [Adekunle, Jeff, Daniel, Ajidoku];
+
+  const ballot = await ethers.deployContract("Ballot", [proposals]);
 
   await ballot.waitForDeployment();
 

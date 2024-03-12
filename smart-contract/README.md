@@ -11,3 +11,6 @@ REPORT_GAS=true npx hardhat test
 npx hardhat node
 npx hardhat run scripts/deploy.ts
 ```
+
+## Deployment to sepolia testnet
+- Ballot contract deployed to 0x32E3353879CdA374cF330b5FD017667426cF1891
