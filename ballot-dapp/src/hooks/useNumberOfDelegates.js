@@ -12,7 +12,7 @@ const useNumberOfDelegates = () => {
 
     useEffect(() => {
       const filter = {
-        address: import.meta.env.VITE_CONTRACT_ADDRESS,
+        address: import.meta.env.VITE_ballot_contract_address,
         topics: [ethers.id("Delegate(address,address,uint256,uint256)")],
       };
 
@@ -20,9 +20,13 @@ const useNumberOfDelegates = () => {
         setValue(events.length);
       });
 
-      wssProvider.on(filter, trackingdelegates);
+      const wssProvider2 = new ethers.WebSocketProvider(
+        import.meta.env.VITE_wss_rpc_url
+      );
 
-      return () => wssProvider.off(filter, trackingdelegates);
+      wssProvider2.on(filter, trackingdelegates);
+
+      return () => wssProvider2.off(filter, trackingdelegates);
     }, [trackingdelegates]);
 
   return value;

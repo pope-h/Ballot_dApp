@@ -12,7 +12,7 @@ const useNumberOfVoters = () => {
 
   useEffect(() => {
     const filter = {
-      address: import.meta.env.VITE_CONTRACT_ADDRESS,
+      address: import.meta.env.VITE_ballot_contract_address,
       topics: [ethers.id("GiveRightToVote(address,uint256)")],
     };
 
@@ -20,9 +20,13 @@ const useNumberOfVoters = () => {
       setValue(events.length + 1);
     });
 
-    wssProvider.on(filter, trackingvoters);
+    const wssProvider2 = new ethers.WebSocketProvider(
+      import.meta.env.VITE_wss_rpc_url
+    );
 
-    return () => wssProvider.off(filter, trackingvoters);
+    wssProvider2.on(filter, trackingvoters);
+
+    return () => wssProvider2.off(filter, trackingvoters);
   }, [trackingvoters]);
 
   return value;
